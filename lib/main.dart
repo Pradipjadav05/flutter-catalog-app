@@ -1,26 +1,54 @@
 import "package:flutter/material.dart";
+import 'package:flutter_application_2/core/store.dart';
+import 'package:flutter_application_2/screen/cart_page.dart';
+import 'package:flutter_application_2/screen/home_detail_page.dart';
+import 'package:flutter_application_2/utils/routes.dart';
+import 'package:flutter_application_2/widgets/themes.dart';
+import 'package:velocity_x/velocity_x.dart';
+import 'screen/home_page.dart';
+import 'screen/login_page.dart';
+import 'package:url_strategy/url_strategy.dart';
 
 void main() {
-  runApp(MyApp());
+  setPathUrlStrategy();
+  runApp(VxState(
+    store: MyStore(),
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  //const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Material(
-        color: Colors.blue,
-        child: Center(
-          child: Container(
-            child: Text(
-              "Wellcome to Flutter",
-              style: TextStyle(color: Colors.green, fontSize: 35),
-            ),
-          ),
-        ),
-      ),
+    return MaterialApp.router(
+      themeMode: ThemeMode.light,
+      theme: MyTheme.lightTheme(context),
+      darkTheme: MyTheme.darkTheme(context),
+      debugShowCheckedModeBanner: false,
+      routeInformationParser: VxInformationParser(),
+      routerDelegate: VxNavigator(routes: {
+        '/': (_, __) => const MaterialPage(child: LoginPage()),
+        MyRoutes.homeRoute: (_, __) => const MaterialPage(child: HomePage()),
+        MyRoutes.homeDetailsRoute: (uri, _) {
+          final catalog = (VxState.store as MyStore)
+              .catalog
+              .getById(int.parse(uri.queryParameters["id"]!));
+          return MaterialPage(child: HomeDetailPage(catalog: catalog));
+        },
+        MyRoutes.loginRoute: (_, __) => const MaterialPage(child: LoginPage()),
+        MyRoutes.cartRoute: (_, __) => const MaterialPage(child: CartPage()),
+      }),
+      // initialRoute: MyRoutes.homeRoute,
+      // routes: {
+      //   '/': (context) => const LoginPage(),
+      //   MyRoutes.homeRoute: (context) => const HomePage(),
+      //   MyRoutes.loginRoute: (context) => const LoginPage(),
+      //   MyRoutes.cartRoute: (context) => const CartPage(),
+      // },
     );
   }
 }
