@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, no_leading_underscores_for_local_identifiers, deprecated_member_use, unnecessary_null_comparison
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_application_2/core/store.dart';
 import 'package:flutter_application_2/models/cart.dart';
 import 'package:flutter_application_2/utils/routes.dart';
-import 'package:flutter_application_2/widgets/drawer.dart';
 import 'package:flutter_application_2/widgets/home_widgets/catalog_header.dart';
 import 'package:flutter_application_2/widgets/home_widgets/catalog_list.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -66,8 +65,8 @@ class _HomePageState extends State<HomePage> {
           mutations: const {RemoveMutation, AddMutation},
           builder: (context, store, status) => FloatingActionButton(
                 backgroundColor: context.theme.buttonColor,
-                onPressed: () =>
-                    Navigator.pushNamed(context, MyRoutes.cartRoute),
+                onPressed: () => store.navigator.routeManager
+                    .push(Uri.parse(MyRoutes.cartRoute)),
                 child: const Icon(
                   CupertinoIcons.cart,
                   color: Colors.white,
@@ -93,7 +92,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      drawer: const MyDrawer(),
+      // drawer: const MyDrawer(),
     );
   }
 }

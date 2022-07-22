@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, unnecessary_null_comparison
 import 'package:velocity_x/velocity_x.dart';
 
 import 'package:flutter_application_2/core/store.dart';
